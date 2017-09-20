@@ -1,0 +1,19 @@
+11.0.0.0.2
+Generates a servies of plots based on the data stored by linear models such as 
+residuals v. fitted values and sqrt(residuals) v. fittes values
+
+#########
+11.0.0.0.3
+par(cex=1.5,cex.main=0.9)
+plot(rmax~light,data=X,xlab="Light intensity (uE/m2/s)"
+        , ylab="maximum growth rate (1/d)",pch=16, xlim = c(0, 120), ylim = c(1,4))
+        
+##########
+11.0.0.0.5
+x <- 3:8
+y <- 5*x + 3
+par(mfcol = c(2, 2))
+plot(y~x, xlim = c(3, 8), type = "l", lty = 1, col = 4) 
+plot(y~x, xlim = c(3, 8), type = "l", lty = 2, col = 3) 
+plot(y~x, xlim = c(3, 8), type = "l", lty = 3, col = 2) 
+plot(y~x, xlim = c(3, 8), type = "l", lty = 4, col = 1) 
