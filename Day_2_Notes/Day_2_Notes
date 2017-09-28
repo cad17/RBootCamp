@@ -1,0 +1,46 @@
+General Advice
+        Choose clear over clever 
+        Use meaningful var names
+        for simple variables use doubles ie xx vs x
+        keep a script with your fav funcs to always source
+        
+Pseudo-code
+        informal way to plan struct of code
+        ignore syntax
+        what vars will you need
+        whats the flow cont
+        
+        example:
+        
+                set N to 100
+                set R to 1.05
+                initialize a vector to stor pop size over years
+        
+                make a for loop that goes 10 years
+                in loop make new N based on previous N*R
+                store each value in pop vector
+        
+                print N at 10 years
+                plot pop vector v t
+                
+General layout of Modeling script
+        1) Setup - load pkgs, set wd, etc 
+        2) Input data, param vals, initial cond
+                set N to 100
+                set R to 1.05
+                initialize a vector to stor pop size over years
+        3) Preform calcs
+                make a for loop that goes 10 years
+                in loop make new N based on previous N*R
+                store each value in pop vector
+        4) Display results by plotting, saving, or showing
+                print N at 10 years
+                plot pop vector v t
+         
+Give your func option to decide if you should plot
+        set an arg like PLOTFLAG
+        and say if PLOTFLAG = 1 then plot
+        else do something else?
+
+        
+        

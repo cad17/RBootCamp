@@ -1,0 +1,172 @@
+########## a ##########
+
+#no setup
+
+#initialize
+ricker_model <- function(nn, rr, KK, ttmax, do_plot = 1){
+        #these will be args:
+        #nn initial pop size
+        #rr initial growth rate
+        #KK initial carrying cap
+        #ttmax how long to run  
+        #do plot should we plot default to yes (1)
+        
+        #pop empty vector to store pop over time
+        pop <- matrix(NA, nrow = 1, ncol = (ttmax + 1))
+        
+        #set initial pop
+        pop[1] <- nn 
+        
+        #do the thing
+        #solve for new popsize based on Ricker model
+        #store it in pop
+        #rinse and repeat for number of years
+        
+        for(tt in 1:ttmax){
+                pop[tt + 1] <- pop[tt] * exp(rr * (1 - (pop[tt] / KK)))
+        }
+        
+        
+        
+        #plot pop vs time
+        if(do_plot == 1){
+        plot(1:(ttmax + 1), pop, xlab = "Time (years)", ylab = "Population Size", col = 2)
+        }
+
+        #give pop note that return has to be at very end
+        #also must be return not print for downstream stuff
+        return(pop)
+} 
+
+############# b #################
+#Population decreases to n = 0.
+ricker_model(100, 1000, 200, 5)
+#stupidly high rr
+
+#Population approaches stable equilibrium at n∗ = K, without oscillations.
+ricker_model(100, 1.06, 200, 10)
+#start below KK and relatively low rr
+
+#Decaying oscillations around n∗ = K.
+ricker_model(250, 1.3, 200, 20)
+#start above KK but and somewhat small rr
+
+#Persistent, regular oscillations.
+ricker_model(250, 2.3, 200, 20)
+#start above KK and mediumish rrr
+
+#Crazy, random-looking fluctuations (chaos).
+ricker_model(600, 4, 200, 50)
+#start way above KK and largeish rr
+
+#Which parameter is the key driver of these patterns? 
+#rr
+
+############ c #############
+#values of interest
+rr_values <- seq(-1, 1.5, by = 0.5)
+
+#empty matrix to store 
+pop_final <- matrix(NA, nrow = 1, ncol = length(rr_values))
+
+#after how many years are we collecting
+tt_collect <- 15
+
+#set initial cond
+pop0 <- 100
+carrying <- 200
+plotyn <- 1
+
+#prepare to make 6 plots in 2 rows and 3 cols 
+par(mfrow=c(2,3), mar=c(4, 4, 3, 2))
+
+#okay lets run the function using our parm of interest
+for(ii in 1:length(rr_values)){
+        ricker_model(pop0, rr_values[ii], carrying, (tt_collect + 1), plotyn)
+        
+        
+        #this was playing around figureing out sensitivity stuff 
+        #pop_trend <- ricker_model(pop0, rr_values[ii], carrying, (tt_collect + 1), plotyn)
+        
+        
+        #pop_final[ii] <- pop_trend[tt_collect + 1]
+        
+        
+}
+
+
+#################### d #########################
+
+nVec <- ricker_model(20, 1.05, 1000, 100, 1)
+#n0 = 20
+#K = 1000
+#trying to find when we reach K/2 (500)
+
+for(tt in 1:100){
+        if(nVec[tt + 1] >= 500){ #this says when nVec is >= 500
+                print(tt+1) #do plus 1 because tt = 1 is n0 
+                break #break once we do this
+        }
+}
+
+        
+###################### e ##################
+
+#first set initial values
+#nn = 100 
+#ttmax = 10
+#do_plot y or n? not sure yet but think no
+
+#make seq of vars of interest
+#make vec of rr values
+#make vect of KK values
+
+#compute the thing
+#make a loop using all values of rr
+#nest a loop using all values of KK
+#store pop by doing all of these in a matrix we can plot that will have 3 dimensions I think
+
+#plot the matrix 
+
+#################### f #######################
+#first set initial values
+#nn = 100 
+n0 <- 100
+
+#ttmax = 10
+years <- 10
+
+#do_plot y or n? not sure yet but think no
+noplot <- 0
+
+#make seq of vars of interest
+#make vec of rr values
+rr_values <- seq(-1, 1.5, by = 0.5)
+
+#make vect of KK values
+KK_values <- seq(250, 500, by = 50)
+
+pop_final <- matrix(NA, nrow = length(rr_values), ncol = length(KK_values))
+
+#compute the thing
+#make a loop using all values of rr
+for(xx in 1:length(rr_values)){
+#nest a loop using all values of KK
+        for(yy in 1:length(KK_values)){
+                pop_trend <- ricker_model(n0, rr_values[xx], KK_values[yy], ttmax = years, noplot)
+                pop_final[xx, yy] <- pop_trend[(years + 1)]
+        }
+#store pop by doing all of these in a matrix we can plot that will have 3 dimensions I think
+
+}
+
+print(pop_final)
+
+#plot the matrix 
+library(plotly) #load plotly lib
+
+#make a contour plot, note z should be a matrix where x = rows and y = cols 
+plot_ly(x = rr_values, y = KK_values, z = pop_final, type = "contour") 
+
+
+
